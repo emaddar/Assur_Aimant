@@ -2,20 +2,14 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
+from my_functions import *
 from PIL import Image
 
 st.set_page_config(page_icon=":bar_chart:",
                 layout="wide")
 
-models = ['Lasso1', 'Lasso2', 'Ridg1', 'Ridg2', 'ElasticNet1', 'ElasticNet2', 'LR1', 'LR2']
-
-for model_name in models:
-    pickle_in = open(f'{model_name}.pkl', 'rb')
-    model = pickle.load(pickle_in)
-    globals()[f'model{model_name}'] = model
-
-
-
+pickle_in = open('Lasso_Model.pkl', 'rb') 
+modelLasso = pickle.load(pickle_in)
 
 
 def make_grid(cols,rows):
@@ -101,43 +95,20 @@ with mygrid1[0][6]:
 
 mygrid2 = make_grid(1,3)
 
-
-Lasso1 = int(modelLasso1.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-
 with mygrid2[0][1]:
     st.write("")
     st.write("")
     st.write("")
     
     if button:
-        st.markdown(f" ### Lasso Charges prediction : {Lasso1} $")
-        for i in range(10):
-            st.write("")
+        predic_lasso = int(modelLasso.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
+        st.markdown(f" ### Lasso Charges prediction : {predic_lasso} $")
+
+
+       
 
 
 
 
 
-if button:
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        Ridg2 = int(modelRidg2.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-        col1.metric("Ridg2", f"{Ridg2} $", f"{Lasso1 - Ridg2} $")
-
-        LR2 = int(modelLR2.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-        col2.metric("LR2", f"{LR2} $", f"{Lasso1 - LR2} $")
-
-        Lasso1 = int(modelLasso1.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-        col3.metric("Lasso1",  f"{Lasso1} $", f"{Lasso1 - LR2} $")
-
-        ElasticNet1 = int(modelElasticNet1.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-        col4.metric("ElasticNet1",  f"{ElasticNet1} $", f"{Lasso1 - ElasticNet1} $")
-
-        Ridg1 = int(modelRidg1.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-        col5.metric("Ridg1",  f"{Ridg1} $", f"{Lasso1 - Ridg1} $")
-
-        LR1 = int(modelLR1.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
-        col6.metric("LR1",  f"{LR1} $", f"{Lasso1 - LR1} $")
-
-
-
-
+    
