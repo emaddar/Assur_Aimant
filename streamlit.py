@@ -103,6 +103,7 @@ with mygrid2[0][1]:
     if button:
         predic_lasso = int(modelLasso.predict(pd.DataFrame(np.array(caracteristique_individue).reshape(1, -1),columns=columns_model)))
         st.markdown(f" ### Lasso Charges prediction : {predic_lasso} $")
+        
 
 
        
